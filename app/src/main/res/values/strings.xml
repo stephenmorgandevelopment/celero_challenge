@@ -1,3 +1,45 @@
 <resources>
     <string name="app_name">celero_challenge</string>
+    <string name="refresh_button">refresh</string>
+    <string name="syncing_dialog">Syncing data</string>
+
+    <!-- Placeholders -->
+    <string name="client_name">Client Name</string>
+    <string name="client_address">Client Address</string>
+    <string name="client_street">Street</string>
+    <string name="client_city">City</string>
+    <string name="client_state">State</string>
+    <string name="client_zip">Zip</string>
+    <string name="client_country">Country</string>
+    <string name="visit_order">Visit Order </string>
+    <string name="client_phone">Phone</string>
+    <string name="client_reason">Service Reason</string>
+
+    <!-- Button names -->
+    <string name="open_in_maps">Open in Maps</string>
+
+
+    <!-- JSON keys -->
+    <string name="identifier">identifier</string>
+    <string name="visitOrder">visitOrder</string>
+    <string name="phoneNumber">phoneNumber</string>
+    <string name="serviceReason">serviceReason</string>
+    <string name="problemPictures">problemPictures</string>
+
+    <string name="profilePicture">profilePicture</string>
+    <string name="large">large</string>
+    <string name="medium">medium</string>
+    <string name="thumbnail">thumbnail</string>
+
+    <string name="location">location</string>
+    <string name="address">address</string>
+    <string name="street">street</string>
+    <string name="city">city</string>
+    <string name="state">state</string>
+    <string name="postalCode">postalCode</string>
+    <string name="country">country</string>
+    <string name="coordinate">coordinate</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
+
 </resources>
