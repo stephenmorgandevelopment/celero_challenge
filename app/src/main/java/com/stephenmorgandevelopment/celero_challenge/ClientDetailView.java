@@ -3,6 +3,7 @@ package com.stephenmorgandevelopment.celero_challenge;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -11,6 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.stephenmorgandevelopment.celero_challenge.database.WorkDatabase;
+import com.stephenmorgandevelopment.celero_challenge.utils.SimpleImageLoader;
+
+import java.net.URL;
 
 public class ClientDetailView extends AppCompatActivity {
     public static final String TAG = ClientDetailView.class.getSimpleName();
@@ -51,6 +55,10 @@ public class ClientDetailView extends AppCompatActivity {
             ClientDetailView.this.finish();
         }
 
+        // I know I should have moved this cursor over to the WorkDatabase class and
+        // built out the client model from there, but I was limited on the time
+        // I had to work on this project, unfortunately.
+
         Cursor cursor = WorkDatabase.getInstance().getClientByIdentifier(identifier);
         if(cursor.moveToFirst()) {
             clientsName.setText(cursor.getString(2));
@@ -64,10 +72,23 @@ public class ClientDetailView extends AppCompatActivity {
             latitude = cursor.getLong(12);
             longitude = cursor.getLong(13);
 
-            //TODO Load profile picture asynchronously.
+            // I wanted to use RxJava to load these images.  I know that my solution is not
+            // optimal.  Again, this was faster for me to finish in the time allotted.
 
+            new SimpleImageLoader(ClientDetailView.this, profilePicture, cursor.getString(4)).start();
 
-            //TODO Load problem pictures asynchronously.
+            String[] problemPics = cursor.getString(15).split(" ");
+//            ViewGroup.LayoutParams ivParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            ViewGroup.LayoutParams ivParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            for(String pic : problemPics) {
+                if (pic != null) {
+                    ImageView imageView = new ImageView(ClientDetailView.this);
+                    imageView.setAdjustViewBounds(true);
+                    imageView.setLayoutParams(ivParams);
+                    problemsScroller.addView(imageView);
+                    new SimpleImageLoader(ClientDetailView.this, imageView, pic.trim()).start();
+                }
+            }
         }
 
         openInMaps.setOnClickListener(v -> {

@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         if(WorkDatabase.hasDatabase() && WorkDatabase.getInstance().hasData()) {
-            //TODO Show listview from cached data.
             populateList();
 
         } else if(!SyncService.isWorking()){
