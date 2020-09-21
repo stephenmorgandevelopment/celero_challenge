@@ -50,5 +50,7 @@ public class Helpers {
         screenDensity = dens;
     }
 
-    public static float getScreenDensity() {return screenDensity;}
+    public static float getScreenDensity() {
+        return screenDensity;
+    }
 }

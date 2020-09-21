@@ -13,10 +13,8 @@ import com.stephenmorgandevelopment.celero_challenge.utils.ClientListSyncService
 import com.stephenmorgandevelopment.celero_challenge.utils.Helpers;
 import com.stephenmorgandevelopment.celero_challenge.utils.HttpClient;
 
-import java.io.File;
 import java.util.List;
 
-import okhttp3.Cache;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,7 +28,7 @@ public class SyncService extends JobIntentService {
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-        if(Helpers.hasInternet()) {
+        if (Helpers.hasInternet()) {
             working = true;
 
             ClientListSyncService service = HttpClient.getRetrofitClient().create(ClientListSyncService.class);
@@ -74,5 +72,7 @@ public class SyncService extends JobIntentService {
         enqueueWork(context, SyncService.class, JOB_ID, work);
     }
 
-    public static boolean isWorking() {return working;}
+    public static boolean isWorking() {
+        return working;
+    }
 }

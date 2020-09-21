@@ -17,7 +17,7 @@ public class HttpClient {
     private static Retrofit retrofitClient;
 
     private HttpClient() {
-        if(cache == null) {
+        if (cache == null) {
             cache = new okhttp3.Cache(new File(Helpers.getCacheDir(), "http_cache"), 10485760);
         }
 
@@ -28,13 +28,12 @@ public class HttpClient {
 
         retrofitClient = new Retrofit.Builder()
                 .baseUrl("https://hulet.tech/")
-                //.client(okClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 
     public static OkHttpClient getOkClient() {
-        if(okClient == null) {
+        if (okClient == null) {
             httpInstance = new HttpClient();
         }
 
@@ -42,7 +41,7 @@ public class HttpClient {
     }
 
     public static Retrofit getRetrofitClient() {
-        if(retrofitClient == null) {
+        if (retrofitClient == null) {
             httpInstance = new HttpClient();
         }
 

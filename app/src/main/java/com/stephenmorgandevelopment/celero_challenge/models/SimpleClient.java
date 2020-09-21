@@ -11,7 +11,15 @@ public class SimpleClient {
         this.reason = reason;
     }
 
-    public long getIdentifier() {return identifier;}
-    public String getName() {return name;}
-    public String getReason() {return reason;}
+    public long getIdentifier() {
+        return identifier;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getReason() {
+        return reason;
+    }
 }

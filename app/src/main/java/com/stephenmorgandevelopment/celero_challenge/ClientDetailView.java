@@ -14,8 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.stephenmorgandevelopment.celero_challenge.database.WorkDatabase;
 import com.stephenmorgandevelopment.celero_challenge.utils.SimpleImageLoader;
 
-import java.net.URL;
-
 public class ClientDetailView extends AppCompatActivity {
     public static final String TAG = ClientDetailView.class.getSimpleName();
 
@@ -48,7 +46,7 @@ public class ClientDetailView extends AppCompatActivity {
 
         long identifier = -1;
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
+        if (extras != null) {
             identifier = extras.getLong(IDENTIFIER_TAG);
         } else {
             Log.d(TAG, "No identifier sent with intent.");
@@ -60,11 +58,11 @@ public class ClientDetailView extends AppCompatActivity {
         // I had to work on this project, unfortunately.
 
         Cursor cursor = WorkDatabase.getInstance().getClientByIdentifier(identifier);
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             clientsName.setText(cursor.getString(2));
             addressLineOne.setText(cursor.getString(7));
             String cityStateZip = cursor.getString(8) + ", "
-                + cursor.getString(9) + ", "  + cursor.getString(10);
+                    + cursor.getString(9) + ", " + cursor.getString(10);
             addressLineTwo.setText(cityStateZip);
             phoneNumber.setText(cursor.getString(3));
             serviceReason.setText(cursor.getString(14));
@@ -78,9 +76,8 @@ public class ClientDetailView extends AppCompatActivity {
             new SimpleImageLoader(ClientDetailView.this, profilePicture, cursor.getString(4)).start();
 
             String[] problemPics = cursor.getString(15).split(" ");
-//            ViewGroup.LayoutParams ivParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             ViewGroup.LayoutParams ivParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            for(String pic : problemPics) {
+            for (String pic : problemPics) {
                 if (pic != null) {
                     ImageView imageView = new ImageView(ClientDetailView.this);
                     imageView.setAdjustViewBounds(true);
@@ -96,7 +93,6 @@ public class ClientDetailView extends AppCompatActivity {
 
         });
     }
-
 
 
 }

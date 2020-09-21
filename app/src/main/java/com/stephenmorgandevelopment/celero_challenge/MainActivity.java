@@ -13,17 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stephenmorgandevelopment.celero_challenge.database.WorkDatabase;
-import com.stephenmorgandevelopment.celero_challenge.models.SimpleClient;
 import com.stephenmorgandevelopment.celero_challenge.utils.CurrentWorkAdapter;
 import com.stephenmorgandevelopment.celero_challenge.utils.Helpers;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -53,13 +48,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if(WorkDatabase.hasDatabase() && WorkDatabase.getInstance().hasData()) {
+        if (WorkDatabase.hasDatabase() && WorkDatabase.getInstance().hasData()) {
             populateList();
 
-        } else if(!SyncService.isWorking()){
-            if(Helpers.hasInternet()) {
+        } else if (!SyncService.isWorking()) {
+            if (Helpers.hasInternet()) {
                 syncingDialog.setVisibility(View.VISIBLE);
-                //displayDialog();
 
                 syncMonitor = new SyncMonitor();
                 syncMonitor.start();
@@ -71,9 +65,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Sync error:  Must have internet to sync.", Toast.LENGTH_LONG).show();
             }
         } else {
-            if(Helpers.hasInternet()) {
+            if (Helpers.hasInternet()) {
                 syncingDialog.setVisibility(View.VISIBLE);
-                //displayDialog();
 
                 syncMonitor = new SyncMonitor();
                 syncMonitor.start();
@@ -90,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        if (!SyncService.isWorking()) {
+            WorkDatabase.getInstance().close();
+        }
 
     }
 
@@ -110,9 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(Helpers.hasInternet()) {
+        if (Helpers.hasInternet()) {
             syncingDialog.setVisibility(View.VISIBLE);
-            //displayDialog();
 
             syncMonitor = new SyncMonitor();
             syncMonitor.start();
@@ -130,13 +124,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void populateList() {
         //TODO Create and display listview form database.
-        if(adapter == null) {
+        if (adapter == null) {
             adapter = new CurrentWorkAdapter(MainActivity.this);
             clientListView.setAdapter(adapter);
             clientListView.setOnItemClickListener(clientClickedListener);
         }
 
-        if(WorkDatabase.hasDatabase()) {
+        if (WorkDatabase.hasDatabase()) {
             adapter.setCurrentWorkList(WorkDatabase.getInstance().getSimpleClients());
             adapter.notifyDataSetChanged();
         }
@@ -153,24 +147,12 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public void displayDialog() {
-        progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.setMessage(getString(R.string.syncing_dialog));
-        progressDialog.show();
-    }
-
-    public void dismissDialog() {
-        if(progressDialog != null) {
-            progressDialog.dismiss();
-        }
-    }
-
     private class SyncMonitor extends Thread {
 
 
         @Override
         public void run() {
-            while(SyncService.isWorking()) {
+            while (SyncService.isWorking()) {
                 try {
                     Thread.sleep(20);
                 } catch (InterruptedException ie) {

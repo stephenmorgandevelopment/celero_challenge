@@ -27,24 +27,20 @@ public class WorkDatabase extends SQLiteOpenHelper {
     private static final String KEY_VISIT_ORDER = "visitOrder";
     private static final String KEY_NAME = "name";
     private static final String KEY_PHONE_NUMBER = "phoneNumber";
-    private static final String KEY_PROFILE_PICTURE = "profilePicture";
     private static final String KEY_LARGE = "large";
     private static final String KEY_MEDIUM = "medium";
     private static final String KEY_THUMBNAIL = "thumbnail";
-    private static final String KEY_LOCATION = "location";
-    private static final String KEY_ADDRESS = "address";
     private static final String KEY_STREET = "street";
     private static final String KEY_CITY = "city";
     private static final String KEY_STATE = "state";
     private static final String KEY_POSTAL_CODE = "postalCode";
     private static final String KEY_COUNTRY = "country";
-    private static final String KEY_COORDINATE = "coordinate";
     private static final String KEY_LATITUDE = "latitude";
     private static final String KEY_LONGITUDE = "longitude";
     private static final String KEY_SERVICE_REASON = "serviceReason";
     private static final String KEY_PROBLEM_PICTURES = "problemPictures";
 
-    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + tableName +" ("
+    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + tableName + " ("
             + KEY_IDENTIFIER + " INTEGER PRIMARY KEY, " + KEY_VISIT_ORDER + " INTEGER, "
             + KEY_NAME + " TEXT, " + KEY_PHONE_NUMBER + " TEXT, "
             + KEY_LARGE + " TEXT, " + KEY_MEDIUM + " TEXT, "
@@ -113,7 +109,7 @@ public class WorkDatabase extends SQLiteOpenHelper {
             insertStatement.bindString(15, client.getServiceReason());
 
             StringBuilder problemsPictures = new StringBuilder();
-            for(String pic : client.getProblemPictures()) {
+            for (String pic : client.getProblemPictures()) {
                 problemsPictures.append(pic.concat(" "));
             }
 
@@ -148,7 +144,7 @@ public class WorkDatabase extends SQLiteOpenHelper {
     public Cursor getClientByIdentifier(long identifier) {
         final String query = "SELECT * FROM " + tableName + " WHERE " + KEY_IDENTIFIER + "=?";
 
-        return database.rawQuery(query, new String[] {String.valueOf(identifier)});
+        return database.rawQuery(query, new String[]{String.valueOf(identifier)});
     }
 
     public Cursor getAllCurrentWork() {
@@ -166,10 +162,10 @@ public class WorkDatabase extends SQLiteOpenHelper {
 
         Cursor cursor = database.rawQuery(query, null);
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 simpleClients.add(new SimpleClient(cursor.getLong(0), cursor.getString(1), cursor.getString(2)));
-            } while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         return simpleClients;
