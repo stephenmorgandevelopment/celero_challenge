@@ -1,12 +1,15 @@
 package com.stephenmorgandevelopment.celero_challenge;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -90,6 +93,16 @@ public class ClientDetailView extends AppCompatActivity {
 
         openInMaps.setOnClickListener(v -> {
             //TODO Launch the clients address in Maps.
+            String uriString = "google.navigation:q=" + latitude + "," + longitude;
+            Uri uri = Uri.parse(uriString);
+            Intent directionsIntent = new Intent(Intent.ACTION_VIEW, uri);
+            directionsIntent.setPackage("com.google.android.apps.maps");
+
+            if(directionsIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(directionsIntent);
+            } else {
+                Toast.makeText(ClientDetailView.this, "Error, no map app found.", Toast.LENGTH_LONG).show();
+            }
 
         });
     }

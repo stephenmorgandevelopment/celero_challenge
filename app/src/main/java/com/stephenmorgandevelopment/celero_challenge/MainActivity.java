@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +22,6 @@ import com.stephenmorgandevelopment.celero_challenge.utils.Helpers;
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TextView syncingDialog;
-    private ProgressDialog progressDialog;
 
     private ListView clientListView;
     private CurrentWorkAdapter adapter;
@@ -50,16 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
         if (WorkDatabase.hasDatabase() && WorkDatabase.getInstance().hasData()) {
             populateList();
-
         } else if (!SyncService.isWorking()) {
             if (Helpers.hasInternet()) {
                 syncingDialog.setVisibility(View.VISIBLE);
 
-                syncMonitor = new SyncMonitor();
-                syncMonitor.start();
-
                 Intent syncIntent = new Intent();
                 SyncService.enqueueWork(MainActivity.this, syncIntent);
+
+                syncMonitor = new SyncMonitor();
+                syncMonitor.start();
 
             } else {
                 Toast.makeText(MainActivity.this, "Sync error:  Must have internet to sync.", Toast.LENGTH_LONG).show();
@@ -123,12 +120,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void populateList() {
-        //TODO Create and display listview form database.
-        if (adapter == null) {
-            adapter = new CurrentWorkAdapter(MainActivity.this);
-            clientListView.setAdapter(adapter);
-            clientListView.setOnItemClickListener(clientClickedListener);
-        }
+        adapter = new CurrentWorkAdapter(MainActivity.this);
+        clientListView.setAdapter(adapter);
+        clientListView.setOnItemClickListener(clientClickedListener);
 
         if (WorkDatabase.hasDatabase()) {
             adapter.setCurrentWorkList(WorkDatabase.getInstance().getSimpleClients());
